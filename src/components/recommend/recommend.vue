@@ -11,8 +11,17 @@
         </slider>
       </div>
       <div class="recommend-list">
-        <h1 class="list-table">热门歌曲推荐</h1>
+        <h1 class="list-title">热门歌曲推荐</h1>
         <ul>
+          <li v-for="item in distList" class="item">
+            <div class="icon">
+              <img width="60" height="60" :src="item.imgurl" alt="">
+            </div>
+            <div class="text">
+              <h2 class="name" v-html="item.creator.name"></h2>
+              <p class="desc" v-html="item.dissname"></p>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -31,7 +40,7 @@
     data() {
       return {
         recommends: [],
-        discList: []
+        distList: []
       }
     },
     created() {
@@ -49,7 +58,7 @@
       _getDistList() {
         getDistList().then((res) => {
           if (res.code === ERR_OK) {
-            console.log(res.data.list)
+            this.distList = res.data.list
           }
         })
       }
