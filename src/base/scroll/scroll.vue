@@ -26,7 +26,7 @@
       mounted() {
         setTimeout(() => {
           this._initScroll()
-        })
+        }, 100)
       },
       methods: {
         _initScroll() {
@@ -51,7 +51,7 @@
       watch: {
         data() {
           setTimeout(() => {
-            this.refresh
+            this.refresh()
           }, 20)
         }
       }
