@@ -36,7 +36,7 @@
   import {getRecommend, getDistList} from 'api/recommend'
   import {ERR_OK} from 'api/config'
 
-  export default {
+export default {
     components: {
       Slider,
       Scroll
