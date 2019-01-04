@@ -101,14 +101,13 @@ const ANCHOR_HEIGHT = 18
             this._calculateHeight()
           }, 20)
         },
-        scrpllY(newY) {
+        scrollY(newY) {
           const listHeight = this.listHeight
           for (let i = 0; i < listHeight.length; i++) {
             let height1 = listHeight[i]
             let height2 = listHeight[i + 1]
             if (!height2 || (-newY > height1 && -newY < height2)) {
               this.currentIndex = i
-              console.log(this.currentIndex)
               return
             }
           }
