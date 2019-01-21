@@ -103,6 +103,12 @@ const ANCHOR_HEIGHT = 18
         },
         scrollY(newY) {
           const listHeight = this.listHeight
+          // 当滚动到顶部，newY>0
+          if (newY > 0) {
+            this.currentIndex = 0
+            return
+          }
+          // 在中间部分滚动
           for (let i = 0; i < listHeight.length; i++) {
             let height1 = listHeight[i]
             let height2 = listHeight[i + 1]
@@ -111,7 +117,8 @@ const ANCHOR_HEIGHT = 18
               return
             }
           }
-          this.currentIndex = 0
+          // 当滚动到底部，且-newY大于最后一个元素的上限
+          this.currentIndex = listHeight.length - 2
         }
       },
       components: {
