@@ -26,18 +26,22 @@
             </li>
           </ul>
         </div>
-        <div class="list-fixed" v-show="fixedTitle">
+        <div class="list-fixed" v-show="fixedTitle" ref="fixed">
           <h1 class="fixed-title">{{fixedTitle}}</h1>
+        </div>
+        <div v-show="!data.length" class="loading-container">
+          <loading></loading>
         </div>
     </scroll>
 </template>
 
 <script type="text/ecmascript-6">
     import Scroll from 'base/scroll/scroll'
+    import Loading from 'base/loading/loading'
     import {getData} from 'common/js/dom'
-import { setTimeout } from 'timers'
 
 const ANCHOR_HEIGHT = 18
+const TITLE_HEIGHY = 30
 
     export default {
       created() {
@@ -49,7 +53,8 @@ const ANCHOR_HEIGHT = 18
       data() {
         return {
           scrollY: -1,
-          currentIndex: 0
+          currentIndex: 0,
+          diff: -1
         }
       },
       props: {
@@ -90,6 +95,11 @@ const ANCHOR_HEIGHT = 18
           this.scrollY = pos.y
         },
         _scrollTo(index) {
+          if (index < 0) {
+            index = 0
+          } else if (index > this.listHeight.length - 2) {
+            index = this.listHeight.length - 2
+          }
           if (!index && index !== 0) {
             return
           }
@@ -127,15 +137,25 @@ const ANCHOR_HEIGHT = 18
             let height2 = listHeight[i + 1]
             if (!height2 || (-newY >= height1 && -newY < height2)) {
               this.currentIndex = i
+              this.diff = height2 + newY
               return
             }
           }
           // 当滚动到底部，且-newY大于最后一个元素的上限
           this.currentIndex = listHeight.length - 2
+        },
+        diff(newVal) {
+          let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHY) ? newVal - TITLE_HEIGHY : 0
+          if (this.fixedTop === fixedTop) {
+            return
+          }
+          this.fixedTop = fixedTop
+          this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
         }
       },
       components: {
-        Scroll
+        Scroll,
+        Loading
       }
     }
 </script>
